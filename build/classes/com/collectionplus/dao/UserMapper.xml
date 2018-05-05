@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.collectionplus.dao.IUserDao">
+	<insert id="insertUser">
+		insert into user(username,password,phone,email) 
+		values(#{username}, #{password},#{phone},#{email});
+	</insert>
+	
+	<delete id="deleteByUsername">
+		delete from user where username=#{xxx}
+	</delete>
+	
+	<update id="updateUserInfo">
+		update student set gender=#{gender}, introduce=#{introduce}, 
+		age=#{age} where username=#{username}
+	</update>
+	
+	<update id="updateUserSharenumber">
+		update student set sharenumber=#{sharenumber} where username=#{username};
+	</update>
+	
+	<update id="updateUserLikenumber">
+		update student set likenumber=#{likenumber} where username=#{username};
+	</update>
+	
+	<update id="updateUserFannumber">
+		update student set fannumber=#{fannumber} where username=#{username};
+	</update>
+	
+	<update id="updateUserSoucenumber">
+		update student set sourcenumber=#{sourcenumber} where username=#{username};
+	</update>
+	
+	<update id="updateUserNotenumber">
+		update student set notenumber=#{notenumber} where username=#{username};
+	</update>
+	
+	<select id="selectAllUser" resultType="User">
+		select * from user;
+	</select>
+	
+	<select id="selectUserByUsername" resultType="User">
+		select * from user where username=#{username}
+	</select>
+	
+	
+	<select id="selectUserByEmail" resultType="User">
+		select * from user where email=#{emial}
+	</select>
+	
+</mapper>

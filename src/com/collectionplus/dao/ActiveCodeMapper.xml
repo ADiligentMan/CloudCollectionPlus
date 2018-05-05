@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.collectionplus.dao.IActiveCodeDao">
+	<insert id="insertActiveCode">
+		insert into `activecode` (`email`,`activecode`,`genetime`) values (#{email},#{activecode},#{genetime});
+	</insert>
+	<update id="updateByEmail">
+		update `activecode` set `activecode`=#{1}, `genetime`=#{2} where `email`=#{0};
+	</update>
+	
+	<select id="selectByEmail" resultType="ActiveCode">
+		select * from `activecode` where `email` = #{email};
+	</select>
+	
+</mapper>

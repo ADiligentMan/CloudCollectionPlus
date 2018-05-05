@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.collectionplus.dao.ILink">
+	<select id ="selectLinkByDirname" resultType="Link">
+		select `directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
+		from `link` inner join `directory` on 
+		`link`.`dirID`=`directory`.`ID` 
+		and `directory`.`dirname`=#{0}
+		and `directory`.`username` =#{1};
+	</select>
+	<select  id="findDirID" resultType="String">
+		select `ID` from `directory` where `dirname`=#{0} and `username`=#{1};
+	</select>
+	
+	<insert id="insertLink">
+		insert into `link`(`username`,`dirID`,`picPath`,`value`,`read`,`title`,`source`,`time`,`type`)
+		values(#{username},#{dirID},#{picPath},#{value},#{read},#{title},#{source},#{time},#{type})
+	</insert>
+</mapper>
