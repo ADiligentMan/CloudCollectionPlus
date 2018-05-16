@@ -1,7 +1,7 @@
 package com.collectionplus.bean;
 
 public class Directory {
-	private int ID;
+	private Integer ID;
 	private String dirname;
 	private String username;
 	private String time;
@@ -9,7 +9,7 @@ public class Directory {
 	
 	
 	
-	public Directory(int iD, String dirname, String username, String time, String type) {
+	public Directory(Integer iD, String dirname, String username, String time, String type) {
 		super();
 		ID = iD;
 		this.dirname = dirname;
@@ -26,10 +26,10 @@ public class Directory {
 		this.type = type;
 	}
 
-	public int getID() {
+	public Integer getID() {
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(Integer iD) {
 		ID = iD;
 	}
 	public String getDirname() {
