@@ -40,7 +40,17 @@ public class LinkService {
 	public ReturnModel getLinkByDirname(HttpServletRequest req) {
 		String dirname = req.getParameter("dirname");
 		String username = req.getParameter("username");
-		List<Link> list = dao.selectLinkByDirname(dirname, username);
+		int page = Integer.parseInt(req.getParameter("page"));
+		
+		List<Link> list = null;
+		//收藏夹名称等于all则会返回所有的所有的收藏
+		if(dirname.equals("all")) {
+			int offset = (page-1)*6;
+			list = dao.selectAllLink(username, offset);
+		}else {
+			int offset =(page-1)*6;
+		  list= dao.selectLinkByDirname(username, dirname,offset);
+		}
 		ReturnModel rm = new ReturnModel();
 		rm.setData(list);
 		if(list==null) {

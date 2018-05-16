@@ -84,5 +84,14 @@ public class UserController {
 		return rm;
 		
 	}
+	//设置用户信息
+	@RequestMapping(value="/modifyInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel modifyInfo(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.modifyUserInfo(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
 	
 }

@@ -6,7 +6,8 @@ public class User {
 	private String phone;
 	private String email;
 	private String gender;
-	private String intruduce;
+	private String introduce;
+	private String address;
 	private int age;
 	private int sharenumber;
 	private int likenumber;
@@ -18,15 +19,18 @@ public class User {
 	public User() {
 		
 	}
-	public User(String username, String password, String phone, String email, String gender, String intruduce, int age,
-			int sharenumber, int likenumber, int fannumber, int sourcenumber, int notenumber) {
+	
+	
+	public User(String username, String password, String phone, String email, String gender, String intruduce,
+			String address, int age, int sharenumber, int likenumber, int fannumber, int sourcenumber, int notenumber) {
 		super();
 		this.username = username;
 		this.password = password;
 		this.phone = phone;
 		this.email = email;
 		this.gender = gender;
-		this.intruduce = intruduce;
+		this.introduce = intruduce;
+		this.address = address;
 		this.age = age;
 		this.sharenumber = sharenumber;
 		this.likenumber = likenumber;
@@ -34,6 +38,18 @@ public class User {
 		this.sourcenumber = sourcenumber;
 		this.notenumber = notenumber;
 	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
 	public String getUsername() {
 		return username;
 	}
@@ -64,11 +80,11 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getIntruduce() {
-		return intruduce;
+	public String getIntroduce() {
+		return introduce;
 	}
-	public void setIntruduce(String intruduce) {
-		this.intruduce = intruduce;
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
 	}
 	public int getAge() {
 		return age;

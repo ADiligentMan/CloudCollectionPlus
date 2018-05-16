@@ -315,7 +315,7 @@ public class UserService {
 	public ReturnModel getAllDirs(HttpServletRequest req){
 		ReturnModel rm = new ReturnModel();
 		String username = req.getParameter("username");
-		List<String> list = dao3.selectAllDirname(username);
+		List<Directory> list = dao3.selectAllDirectoryByUsername(username);
 		 rm.setData(list);
 		 rm.setSuccess(true);
 		 rm.setInfo("返回成功");
@@ -340,6 +340,41 @@ public class UserService {
 		Directory dir = new Directory(username,dirname,type,time);
 		dao3.createDir(dir);
 		rm.setInfo("成功创建一个收藏夹");
+		rm.setSuccess(true);
+		return rm;
+	}
+	
+	/**
+	 * 修改用户信息
+	* @Title: modifyUserInfo  
+	* @Description: TODO
+	* @param @param req
+	* @param @return
+	* @return ReturnModel
+	* @throws
+	 */
+	public ReturnModel modifyUserInfo(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String username = req.getParameter("username");
+		String introduce = req.getParameter("introduce");
+		String email = req.getParameter("email");
+		String phone = req.getParameter("phone");
+		String address = req.getParameter("address");
+		String gender  = req.getParameter("gender");
+		String age = req.getParameter("age");
+	
+		User user = new User();
+		user.setUsername(username);
+		user.setIntroduce(introduce);
+		user.setEmail(email);
+		user.setPhone(phone);
+		user.setAddress(address);
+		user.setGender(gender);
+		user.setAge(Integer.valueOf(age));;
+		
+		dao.updateUserInfo(user);
+		ss.commit();
+		rm.setInfo("保存成功");
 		rm.setSuccess(true);
 		return rm;
 	}
