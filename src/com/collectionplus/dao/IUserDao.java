@@ -14,6 +14,6 @@ public interface IUserDao {
 	public void updateUserSourcenumber(int sourceNumber);
 	public void updateUserNotenumber(int noteNumber);
 	public List<User> selectAllUser();
-	public List<User> selectUserByUsername(String username);
+	public User selectUserByUsername(String username);
 	public User selectUserByEmail(String mail);
 }

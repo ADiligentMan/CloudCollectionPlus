@@ -73,7 +73,7 @@ public class UserService {
 
 	public ReturnModel selectUserByUsername(HttpServletRequest req) {
 		String username = req.getParameter("username");
-		List<User> user = dao.selectUserByUsername(username);
+		User user = dao.selectUserByUsername(username);
 		ReturnModel rm = new ReturnModel();
 		if(user==null) {
 			rm.setSuccess(false);
