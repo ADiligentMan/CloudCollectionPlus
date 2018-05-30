@@ -2,6 +2,7 @@ package com.collectionplus.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -80,8 +81,9 @@ public class UserService {
 			rm.setInfo("用户不存在");
 			return rm;
 		}
-		
-		rm.setData(user);
+		List<User> list = new ArrayList<>();
+		list.add(user);
+		rm.setData(list);
 		rm.setSuccess(true);
 		rm.setInfo("返回成功");
 		return rm;
