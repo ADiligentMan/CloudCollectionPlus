@@ -74,6 +74,26 @@ public class UserController {
 		
 	}
 	
+	//重命名收藏夹。parems:username,olddirname,newdirname
+	@RequestMapping(value="/renamedir.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel renameDir(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.renameDir(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	//删除一个收藏夹。params:username,dirname
+	@RequestMapping(value="/deletedir.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel deleteDir(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.deleteDir(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
 	//返回用户信息
 	@RequestMapping(value="/getInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody

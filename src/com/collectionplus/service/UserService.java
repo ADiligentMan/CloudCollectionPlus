@@ -22,6 +22,7 @@ import com.collectionplus.dao.IUserDao;
 import com.collectionplus.dao.MyBatisUtils;
 import com.collectionplus.utils.DateUtil;
 import com.collectionplus.utils.MailUtil;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession; 
 /**
  * @ClassName: UserService
@@ -32,49 +33,49 @@ import org.apache.ibatis.session.SqlSession;
  */
 
 public class UserService {
-	private  IUserDao dao;
-	private IActiveCodeDao dao2;
-	private IDirectory dao3;
+	private  IUserDao userDao;
+	private IActiveCodeDao activeDao;
+	private IDirectory dirDao;
 	private SqlSession ss;
 	public UserService() {
 		ss = MyBatisUtils.getSqlSession();
-		this.dao = (IUserDao)ss.getMapper(IUserDao.class);
-		this.dao2 = (IActiveCodeDao)ss.getMapper(IActiveCodeDao.class);
-		this.dao3 = (IDirectory)ss.getMapper(IDirectory.class);
+		this.userDao = (IUserDao)ss.getMapper(IUserDao.class);
+		this.activeDao = (IActiveCodeDao)ss.getMapper(IActiveCodeDao.class);
+		this.dirDao = (IDirectory)ss.getMapper(IDirectory.class);
 	}
 	
 	public void insertUser(User user) {
-		dao.insertUser(user);
+		userDao.insertUser(user);
 		
 	}
 
 	public void updateUserInfo(User user) {
-		dao.updateUserInfo(user);
+		userDao.updateUserInfo(user);
 	}
 
 	public void updateUserSharenumber(int shareNumber) {
-		dao.updateUserSharenumber(shareNumber);
+		userDao.updateUserSharenumber(shareNumber);
 	}
 
 	public void updateUserLikenumber(int likeNumber) {
-		dao.updateUserLikenumber(likeNumber);
+		userDao.updateUserLikenumber(likeNumber);
 	}
 
 	public void updateUserFannumber(int fanNumber) {
-		dao.updateUserFannumber(fanNumber);
+		userDao.updateUserFannumber(fanNumber);
 	}
 
 	public void updateUserSourcenumber(int sourceNumber) {
-		dao.updateUserSourcenumber(sourceNumber);
+		userDao.updateUserSourcenumber(sourceNumber);
 	}
 
 	public void updateUserNotenumber(int noteNumber) {
-		dao.updateUserNotenumber(noteNumber);
+		userDao.updateUserNotenumber(noteNumber);
 	}
 
 	public ReturnModel selectUserByUsername(HttpServletRequest req) {
 		String username = req.getParameter("username");
-		User user = dao.selectUserByUsername(username);
+		User user = userDao.selectUserByUsername(username);
 		ReturnModel rm = new ReturnModel();
 		if(user==null) {
 			rm.setSuccess(false);
@@ -121,14 +122,13 @@ public class UserService {
 		
 		//如果邮箱已被注册责不发送验证码
 		User user;
-		if((user=dao.selectUserByEmail(email))!=null) {//邮箱已被注册
+		if((user=userDao.selectUserByEmail(email))!=null) {//邮箱已被注册
 			rm.setSuccess(false);
 			rm.setInfo("邮箱已被注册");
 			return rm;
 		}
 		
-		//得到主机地址，验证码以及验证码产生时间
-		String host =req.getRemoteHost();
+		//验证码以及验证码产生时间
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = sdf.format(new Date());
 		String activeCode = this.generateCode(6);
@@ -136,11 +136,11 @@ public class UserService {
 		
 		//如果给同一个邮箱发两次验证码则更新前一个验证码。
 		ActiveCode ac;
-		if((ac=dao2.selectByEmail(email))!=null) {//如果可以找到，则表示给同一个邮箱再一次发送了验证码
+		if((ac=activeDao.selectByEmail(email))!=null) {//如果可以找到，则表示给同一个邮箱再一次发送了验证码
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					dao2.updateByEmail(email, activeCode,time);
+					activeDao.updateByEmail(email, activeCode,time);
 					ss.commit();
 				}}).start();
 		//如果是一个没有接收到验证码的邮箱，则把验证码存储到数据库
@@ -148,7 +148,7 @@ public class UserService {
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
-					dao2.insertActiveCode(new ActiveCode(email,activeCode,time));
+					activeDao.insertActiveCode(new ActiveCode(email,activeCode,time));
 					ss.commit();
 				}}).start();	
 		}
@@ -196,7 +196,7 @@ public class UserService {
 		//判断验证码是否正确和过期
 		boolean isOverdue = true;
 		boolean isCorrect = false;
-		ActiveCode serac = dao2.selectByEmail(email);	
+		ActiveCode serac = activeDao.selectByEmail(email);	
 		if(serac==null) {
 			result.setInfo("您还未得到验证码，请先发送验证码");
 			result.setSuccess(false);
@@ -220,10 +220,10 @@ public class UserService {
 		
 		//检验用户名
 		User user ;
-		if((user=dao.selectUserByEmail(email))!=null) {//邮箱已被注册
+		if((user=userDao.selectUserByEmail(email))!=null) {//邮箱已被注册
 			result.setSuccess(false);
 			result.setInfo("邮箱已被注册");
-		}else if((user=dao.selectUserByUsername(username)) != null) {//用户名已存在
+		}else if((user=userDao.selectUserByUsername(username)) != null) {//用户名已存在
 			result.setSuccess(false);
 			result.setInfo("用户名已存在");
 		}else if(!isCorrect){//验证码错误
@@ -240,7 +240,7 @@ public class UserService {
 					userTosave.setEmail(email);
 					userTosave.setUsername(username);
 					userTosave.setPassword(password);
-					dao.insertUser(userTosave);
+					userDao.insertUser(userTosave);
 					ss.commit();
 				} },"td1") ;
 			td.start();
@@ -268,7 +268,7 @@ public class UserService {
 		
 		// 用户名登陆
 		if (!username.contains("@")) {
-			user = dao.selectUserByUsername(username);
+			user = userDao.selectUserByUsername(username);
 			if (user == null) {
 				result.setSuccess(false);
 				result.setInfo("用户名错误");
@@ -281,7 +281,7 @@ public class UserService {
 			}
 			// 用邮箱登陆
 		} else {
-			user = dao.selectUserByEmail(username);
+			user = userDao.selectUserByEmail(username);
 			if (user == null) {
 				result.setSuccess(false);
 				result.setInfo("邮箱错误");
@@ -294,8 +294,8 @@ public class UserService {
 				System.gc();
 			}
 		}
+		
 		ss.commit();
-
 		return result;
 	}
 	
@@ -317,7 +317,7 @@ public class UserService {
 	public ReturnModel getAllDirs(HttpServletRequest req){
 		ReturnModel rm = new ReturnModel();
 		String username = req.getParameter("username");
-		List<Directory> list = dao3.selectAllDirectoryByUsername(username);
+		List<Directory> list = dirDao.selectAllDirectoryByUsername(username);
 		 rm.setData(list);
 		 rm.setSuccess(true);
 		 rm.setInfo("返回成功");
@@ -337,12 +337,36 @@ public class UserService {
 		String username = req.getParameter("username");
 		String dirname = req.getParameter("dirname");
 		String type = req.getParameter("type");
+		if(username==null) {
+			rm.setInfo("用户名为空");
+			rm.setSuccess(false);
+			return rm;
+		}else if(dirname==null) {
+			rm.setInfo("收藏夹名为空");
+			rm.setSuccess(false);
+			return rm;
+		}else if(type==null) {
+			rm.setInfo("没有类型");
+			rm.setSuccess(false);
+			return rm;
+		}
+		System.out.println("tag:"+username);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = sdf.format(new Date());
-		Directory dir = new Directory(username,dirname,type,time);
-		dao3.createDir(dir);
-		rm.setInfo("成功创建一个收藏夹");
+		Directory dir = new Directory(dirname,username,type,time);
+		//如果捕捉到异常，说明已存在同名收藏夹
+		try {
+			dirDao.createDir(dir);
+		}catch(Exception e) {	
+			if(e instanceof PersistenceException) {
+				rm.setInfo("已存在同名收藏夹");
+				rm.setSuccess(false);
+				return rm;
+			}
+		}
+		rm.setInfo("创建成功");
 		rm.setSuccess(true);
+		ss.commit();
 		return rm;
 	}
 	
@@ -364,7 +388,7 @@ public class UserService {
 		String address = req.getParameter("address");
 		String gender  = req.getParameter("gender");
 		String age = req.getParameter("age");
-	
+		
 		User user = new User();
 		user.setUsername(username);
 		user.setIntroduce(introduce);
@@ -374,10 +398,72 @@ public class UserService {
 		user.setGender(gender);
 		user.setAge(Integer.valueOf(age));;
 		
-		dao.updateUserInfo(user);
+		userDao.updateUserInfo(user);
 		ss.commit();
 		rm.setInfo("保存成功");
 		rm.setSuccess(true);
+		return rm;
+	}
+	
+	/**
+	* 
+	* @Title: renameDir  
+	* @Description: 修改收藏夹名称
+	* @param  req
+	* @return ReturnModel
+	* @throws
+	 */
+	public ReturnModel renameDir(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String username = req.getParameter("username");
+		String olddirname = req.getParameter("olddirname");
+		String newdirname = req.getParameter("newdirname");
+		if(username==null) {
+			rm.setInfo("用户名为空");
+			rm.setSuccess(false);
+			return rm;
+		}else if(olddirname==null) {
+			rm.setInfo("收藏夹名为空");
+			rm.setSuccess(false);
+			return rm;
+		}else if(newdirname==null) {
+			rm.setInfo("收藏夹名为空");
+			rm.setSuccess(false);
+			return rm;
+		}
+		
+		dirDao.renameDir(username, olddirname, newdirname);
+		rm.setInfo("修改成功");
+		rm.setSuccess(true);
+		ss.commit();
+		return rm;
+	}
+	
+	/**
+	* 
+	* @Title: deleteDir  
+	* @Description: 删除一个收藏夹
+	* @param  req 
+	* @return RerurnModel
+	* @throws
+	*/
+	public ReturnModel deleteDir(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String username = req.getParameter("username");
+		String dirname = req.getParameter("dirname");
+		if(username==null) {
+			rm.setInfo("用户名为空");
+			rm.setSuccess(false);
+			return rm;
+		}else if(dirname==null) {
+			rm.setInfo("收藏夹名为空");
+			rm.setSuccess(false);
+			return rm;
+		}
+		rm.setSuccess(true);
+		rm.setInfo("删除成功");
+		dirDao.deleteDir(username, dirname);
+		ss.commit();
 		return rm;
 	}
 
