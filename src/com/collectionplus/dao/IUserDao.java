@@ -8,6 +8,7 @@ public interface IUserDao {
 	public void insertUser(User user);
 	public void deleteByUsername(String string);
 	public void updateUserInfo(User user);
+	public void updateUserPassword(User user);
 	public void updateUserSharenumber(int shareNumber);
 	public void updateUserLikenumber(int likeNumber);
 	public void updateUserFannumber(int fanNumber);

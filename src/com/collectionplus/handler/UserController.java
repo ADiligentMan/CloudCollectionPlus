@@ -1,6 +1,8 @@
 package com.collectionplus.handler;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.collectionplus.bean.RecomLink;
+import com.collectionplus.bean.RecomUser;
 import com.collectionplus.bean.ReturnModel;
 import com.collectionplus.service.UserService;
 import com.collectionplus.utils.Aspect;
@@ -94,4 +98,38 @@ public class UserController {
 		return rm;
 	}
 	
+	@RequestMapping("/recom_user.do")
+	@ResponseBody
+	public Object getRecom(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = new ReturnModel();
+		List<RecomUser> user = new ArrayList<RecomUser>();
+		user.add(new RecomUser("444"));
+		user.add(new RecomUser("555"));
+		rm.setData(user);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	@RequestMapping("/recom_link.do")
+	@ResponseBody
+	public Object getRecomLink(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = new ReturnModel();
+		List<RecomLink> link = new ArrayList<RecomLink>();
+		link.add(new RecomLink("444"));
+		link.add(new RecomLink("555"));
+		rm.setData(link);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	@RequestMapping("/modifyPassword.do")
+	@ResponseBody
+	public ReturnModel modifyPassword(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.modifyPassword(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
 }

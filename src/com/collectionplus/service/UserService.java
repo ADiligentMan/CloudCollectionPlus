@@ -381,4 +381,22 @@ public class UserService {
 		return rm;
 	}
 
+	/*
+	 * 修改用户密码
+	 */
+	public ReturnModel modifyPassword(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		
+		dao.updateUserPassword(user);
+		ss.commit();
+		rm.setInfo("保存成功");
+		rm.setSuccess(true);
+		return rm;
+	}
 }
