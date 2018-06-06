@@ -78,26 +78,26 @@ public class UserController {
 		
 	}
 	
-	//返回用户信息
-	@RequestMapping(value="/getInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
+	//重命名收藏夹。parems:username,olddirname,newdirname
+	@RequestMapping(value="/renamedir.do",method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public ReturnModel getInfo(HttpServletRequest req) {
+	public ReturnModel renameDir(HttpServletRequest req) {
 		Aspect.before(req);
-		ReturnModel rm = service.selectUserByUsername(req);
-		Aspect.afterReturning(rm);
-		return rm;
-		
-	}
-	//设置用户信息
-	@RequestMapping(value="/modifyInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
-	@ResponseBody
-	public ReturnModel modifyInfo(HttpServletRequest req) {
-		Aspect.before(req);
-		ReturnModel rm = service.modifyUserInfo(req);
+		ReturnModel rm = service.renameDir(req);
 		Aspect.afterReturning(rm);
 		return rm;
 	}
 	
+	//删除一个收藏夹。params:username,dirname
+	@RequestMapping(value="/deletedir.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel deleteDir(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.deleteDir(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+		
 	@RequestMapping("/recom_user.do")
 	@ResponseBody
 	public Object getRecom(HttpServletRequest req) {
@@ -138,6 +138,27 @@ public class UserController {
 	public ReturnModel checkEnsureCode(HttpServletRequest req) {
 		Aspect.before(req);
 		ReturnModel rm = service.checkActiveCode(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+
+	
+	//返回用户信息
+	@RequestMapping(value="/getInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel getInfo(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.selectUserByUsername(req);
+		Aspect.afterReturning(rm);
+		return rm;
+		
+	}
+	//设置用户信息
+	@RequestMapping(value="/modifyInfo.do",method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public ReturnModel modifyInfo(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.modifyUserInfo(req);
 		Aspect.afterReturning(rm);
 		return rm;
 	}
