@@ -132,4 +132,13 @@ public class UserController {
 		Aspect.afterReturning(rm);
 		return rm;
 	}
+	
+	@RequestMapping("/checkEnsureCode.do")
+	@ResponseBody
+	public ReturnModel checkEnsureCode(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm = service.checkActiveCode(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
 }

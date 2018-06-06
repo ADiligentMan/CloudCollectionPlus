@@ -399,4 +399,26 @@ public class UserService {
 		rm.setSuccess(true);
 		return rm;
 	}
+	
+	/*
+	 * 校验验证码
+	 */
+	public ReturnModel checkActiveCode(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String email = req.getParameter("email");
+		String activeCode = req.getParameter("activeCode");
+		
+		ActiveCode code = dao2.selectByEmail(email);
+		
+		// 如果验证码相等
+		if (code.getActivecode().equals(activeCode)) {
+			
+			rm.setInfo("验证码正确");
+			rm.setSuccess(true);
+		} else {
+			rm.setInfo("验证码错误");
+			rm.setSuccess(false);
+		}
+		return rm;
+	}
 }
