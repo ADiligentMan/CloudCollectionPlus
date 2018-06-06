@@ -405,6 +405,48 @@ public class UserService {
 		return rm;
 	}
 	
+	/*
+	 * 修改用户密码
+	 */
+	public ReturnModel modifyPassword(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String username = req.getParameter("username");
+		String password = req.getParameter("password");
+		
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		
+		userDao.updateUserPassword(user);
+		ss.commit();
+		rm.setInfo("保存成功");
+		rm.setSuccess(true);
+		return rm;
+	}
+	
+	/*
+	 * 校验验证码
+	 */
+	public ReturnModel checkActiveCode(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String email = req.getParameter("email");
+		String activeCode = req.getParameter("activeCode");
+		
+		ActiveCode code = activeDao.selectByEmail(email);
+		
+		// 如果验证码相等
+		if (code != null && code.getActivecode().equals(activeCode)) {
+			
+			rm.setInfo("验证码正确");
+			rm.setSuccess(true);
+		} else {
+			rm.setInfo("验证码错误");
+			rm.setSuccess(false);
+		}
+		return rm;
+	}
+}
+	
 	/**
 	* 
 	* @Title: renameDir  
