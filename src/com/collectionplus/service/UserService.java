@@ -411,7 +411,7 @@ public class UserService {
 		ActiveCode code = dao2.selectByEmail(email);
 		
 		// 如果验证码相等
-		if (code.getActivecode().equals(activeCode)) {
+		if (code != null && code.getActivecode().equals(activeCode)) {
 			
 			rm.setInfo("验证码正确");
 			rm.setSuccess(true);
