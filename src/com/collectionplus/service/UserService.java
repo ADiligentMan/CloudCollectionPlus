@@ -353,7 +353,7 @@ public class UserService {
 		System.out.println("tag:"+username);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = sdf.format(new Date());
-		Directory dir = new Directory(dirname,username,type,time);
+		Directory dir = new Directory(dirname,username,time,type);
 		//如果捕捉到异常，说明已存在同名收藏夹
 		try {
 			dirDao.createDir(dir);
