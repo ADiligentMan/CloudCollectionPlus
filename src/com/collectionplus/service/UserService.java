@@ -119,12 +119,20 @@ public class UserService {
 		String email = req.getParameter("email");
 		String content = "尊敬的用户，感谢您的注册！我们是收藏+,您的验证码是";
 		String subject = "验证码";
+		String type = req.getParameter("type");
 		
-		//如果邮箱已被注册责不发送验证码
-		User user;
-		if((user=userDao.selectUserByEmail(email))!=null) {//邮箱已被注册
+		
+		//注册的时候，如果邮箱已被注册,则不发送验证码
+		User user = userDao.selectUserByEmail(email);
+		if(type.equals("0")&&user!=null) {
 			rm.setSuccess(false);
 			rm.setInfo("邮箱已被注册");
+			return rm;
+		}
+		//忘记密码的时候，如果邮箱没有注册过
+		if(type.equals("1")&&user==null) {
+			rm.setSuccess(false);
+			rm.setInfo("该邮箱未被注册");
 			return rm;
 		}
 		
