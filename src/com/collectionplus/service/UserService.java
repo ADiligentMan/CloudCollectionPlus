@@ -386,11 +386,13 @@ public class UserService {
 	 */
 	public ReturnModel modifyPassword(HttpServletRequest req) {
 		ReturnModel rm = new ReturnModel();
-		String username = req.getParameter("username");
+//		String username = req.getParameter("username");
+		String email = req.getParameter("email");
 		String password = req.getParameter("password");
 		
 		User user = new User();
-		user.setUsername(username);
+//		user.setUsername(username);
+		user.setEmail(email);
 		user.setPassword(password);
 		
 		dao.updateUserPassword(user);
