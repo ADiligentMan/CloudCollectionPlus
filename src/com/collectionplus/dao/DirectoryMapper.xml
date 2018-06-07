@@ -3,13 +3,25 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.collectionplus.dao.IDirectory">
+
 	<select id="selectAllDirectoryByUsername" resultType="Directory">
 		select * from `directory` where username=#{username};
 	</select>
+	
 	<select id="selectAllDirname" resultType="String">
 		select `dirname` from `directory` where username=#{username}; 
 	</select>
-	<insert id="insertDir">
+	
+	<insert id="createDir">
 		insert into `directory` (`dirname`,`username`,`time`,`type`) values(#{dirname},#{username},#{time},#{type});
 	</insert>
+	
+	<update id="renameDir">
+		update `directory` set `username`=#{0}, `dirname`=#{2} where `dirname`=#{1};
+	</update>
+	
+	<delete id="deleteDir">
+		delete from `directory` where `username`=#{0} and `dirname`=#{1};
+	</delete>
+	
 </mapper>
