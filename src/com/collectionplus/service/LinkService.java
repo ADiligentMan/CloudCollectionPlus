@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.ibatis.session.SqlSession;
 
 import com.collectionplus.bean.Link;
+import com.collectionplus.bean.Note;
 import com.collectionplus.bean.ReturnModel;
 import com.collectionplus.dao.ILink;
+import com.collectionplus.dao.INote;
 import com.collectionplus.dao.MyBatisUtils;
 
 /**  
@@ -23,11 +25,13 @@ import com.collectionplus.dao.MyBatisUtils;
 */
 public class LinkService {
 	private ILink dao;
+	private INote noteDao; 
 	private SqlSession ss;
 	
 	public LinkService() {
 		ss = MyBatisUtils.getSqlSession();
 		dao = (ILink)ss.getMapper(ILink.class);
+		noteDao = (INote)ss.getMapper(INote.class);
 	}
 	
 	/**  
@@ -109,5 +113,126 @@ public class LinkService {
 		ss.commit();
 		return rm;
 	}
-
+	
+	/**
+	 * 创建一个笔记
+	 * 
+	 * @param req
+	 * @return
+	 */
+	public ReturnModel createNote(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		//构建参数列表
+		Map<String,String[]> originMap = req.getParameterMap();
+		Map<String,String>  targetMap = new HashMap();
+		for(Map.Entry<String, String[]> entry:originMap.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue()[0];
+			targetMap.put(key, value);
+		}
+		//创建笔记
+		try {
+			noteDao.createNote(targetMap);
+		}catch(Exception e) {
+			rm.setInfo("创建失败");
+			rm.setSuccess(false);
+			return rm;
+		}
+		
+		rm.setInfo("创建成功");
+		rm.setSuccess(true);
+		ss.commit();
+		return rm;
+	}
+	
+	/**
+	 * 获取一个链接的所有笔记
+	 * @param req
+	 * @return
+	 */
+	public ReturnModel getNotes(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String linkID = req.getParameter("linkID");
+		if(linkID==null) {
+			rm.setSuccess(false);
+			rm.setInfo("参数为空");
+			return rm;
+		}
+		Integer int_linkID ;
+		
+		try {
+			int_linkID = Integer.parseInt(linkID);
+		}catch(Exception e){
+			rm.setSuccess(false);
+			rm.setInfo("参数有误");
+			return rm;
+		}
+		
+		List<Note> data = noteDao.findNotesByLinkId(int_linkID);
+		rm.setSuccess(true);
+		rm.setInfo("成功");
+		rm.setData(data);
+		return rm;
+	}
+	
+	
+	/**
+	 * 删除一个笔记
+	 * 
+	 * @param req
+	 * @return
+	 */
+	public ReturnModel deleteNotes(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		String ID = req.getParameter("ID");
+		if(ID==null) {
+			rm.setSuccess(false);
+			rm.setInfo("参数为空");
+			return rm;
+		}
+		
+		Integer int_ID ;
+		
+		try {
+			int_ID = Integer.parseInt(ID);
+		}catch(Exception e){
+			rm.setSuccess(false);
+			rm.setInfo("参数有误");
+			return rm;
+		}
+		noteDao.deleteNote(int_ID);
+		ss.commit();
+		rm.setSuccess(true);
+		rm.setInfo("成功删除");
+		return rm;
+	}
+	/**
+	 * 修改一个笔记
+	 * @param req
+	 * @return
+	 */
+	public ReturnModel modifyNote(HttpServletRequest req) {
+		ReturnModel rm = new ReturnModel();
+		//构建参数列表
+		Map<String,String[]> originMap = req.getParameterMap();
+		Map<String,String>  targetMap = new HashMap();
+		for(Map.Entry<String, String[]> entry:originMap.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue()[0];
+			targetMap.put(key, value);
+		}
+		//创建笔记
+		try {
+			noteDao.modifyNote(targetMap);
+		}catch(Exception e) {
+			rm.setInfo("修改失败");
+			rm.setSuccess(false);
+			return rm;
+		}
+		
+		rm.setInfo("修改成功");
+		rm.setSuccess(true);
+		ss.commit();
+		return rm;
+	}
 }

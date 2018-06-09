@@ -38,4 +38,45 @@ public class LinkController {
 		Aspect.afterReturning(rm);
 		return rm;
 	}
+	
+	//create a note
+	@RequestMapping(value="/createnote.do",method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public ReturnModel createnote(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm =  service.createNote(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	//delete a note
+	@RequestMapping(value="/deletenote.do",method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public ReturnModel deletenote(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm =  service.deleteNotes(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	
+	//modify a note
+	@RequestMapping(value="/modifynote.do",method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public ReturnModel modifynote(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm =  service.modifyNote(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
+	
+	//retrieve all notes of a link
+	@RequestMapping(value="/getnotes.do",method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public ReturnModel getnotes(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm =  service.getNotes(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
 }

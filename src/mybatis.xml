@@ -30,6 +30,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="com/collectionplus/dao/ActiveCodeMapper.xml"/>
 		<mapper resource="com/collectionplus/dao/DirectoryMapper.xml"/>
 		<mapper resource="com/collectionplus/dao/LinkMapper.xml"/>
+		<mapper resource="com/collectionplus/dao/NoteMapper.xml"/>
 	</mappers>
 	
 </configuration>

@@ -3,9 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.collectionplus.dao.ILink">
-<!-- 选择某个用户某个收藏夹下所有的收藏 -->
+	<!-- 选择某个用户某个收藏夹下所有的收藏 -->
 	<select id ="selectLinkByDirname" resultType="Link">
-		select `directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
+		select `link`.`ID`,`directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
 		from `link` inner join `directory` on 
 		`link`.`dirID`=`directory`.`ID` 
 		and `directory`.`dirname`=#{1}
@@ -14,16 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<!-- 选择所有的收藏 -->
 	<select id ="selectAllLink" resultType="Link">
-		select `directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
+		select `link`.`ID`,`directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
 		from `link` inner join `directory` on 
 		`link`.`dirID`=`directory`.`ID` 
 		and `directory`.`username` =#{0}
 		limit #{1},6;
 	</select>
+	<!-- 根据用户名和收藏夹名称返回对应收藏夹的ID -->
 	<select  id="findDirID" resultType="String">
 		select `ID` from `directory` where `dirname`=#{0} and `username`=#{1};
 	</select>
-	
+	<!-- 插入链接 -->
 	<insert id="insertLink">
 		insert into `link`(`username`,`dirID`,`picPath`,`value`,`read`,`title`,`source`,`time`,`type`)
 		values(#{username},#{dirID},#{picPath},#{value},#{read},#{title},#{source},#{time},#{type})

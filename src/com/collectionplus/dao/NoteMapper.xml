@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.collectionplus.dao.INote">
+	<!--  public void findNotesByLinkId(Integer linkID);
+		  public void modifyNote(Note note); 
+		  public void deleteNote(Integer noteID);
+		  public void createNote(Note note);-->
+	<select id ="findNotesByLinkId" resultType="Note">
+		select * from `note` where `linkID`=#{0}
+	</select>
+	
+	<update id="modifyNote">
+		update `note` set `title`=#{title},`content`=#{content},`time`=#{time} where `ID`=#{ID};
+	</update>
+	<delete id="deleteNote">
+		delete from `note` where `ID`=#{0}
+	</delete>
+	<insert id="createNote">
+		insert into `note`(linkID,title,username,content,time) values(#{linkID},
+		#{title},#{username},#{content},#{time});
+	</insert>
+	
+</mapper>
