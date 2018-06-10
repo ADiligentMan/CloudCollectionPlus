@@ -10,15 +10,18 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 public class MyBatisUtils {
 	private static SqlSessionFactory sqlSessionFactory;
-
+	private static SqlSession sqlSession;
 	public static SqlSession getSqlSession() {
 		try {
 			InputStream is = Resources.getResourceAsStream("mybatis.xml");
 			if (sqlSessionFactory == null) {
 				sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
 			}
+			if(sqlSession==null) {
+				sqlSession = sqlSessionFactory.openSession();
+			}
 			
-			return sqlSessionFactory.openSession();
+			return sqlSession;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
