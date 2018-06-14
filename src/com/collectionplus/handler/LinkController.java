@@ -79,4 +79,13 @@ public class LinkController {
 		Aspect.afterReturning(rm);
 		return rm;
 	}
+	
+	@RequestMapping(value="/getLinks.do",method = {RequestMethod.POST,RequestMethod.GET})
+	@ResponseBody
+	public ReturnModel getUserLinks(HttpServletRequest req) {
+		Aspect.before(req);
+		ReturnModel rm =  service.getLinks(req);
+		Aspect.afterReturning(rm);
+		return rm;
+	}
 }

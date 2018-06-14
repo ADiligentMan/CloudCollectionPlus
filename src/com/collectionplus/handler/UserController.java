@@ -98,31 +98,7 @@ public class UserController {
 		return rm;
 	}
 		
-	@RequestMapping("/recom_user.do")
-	@ResponseBody
-	public Object getRecom(HttpServletRequest req) {
-		Aspect.before(req);
-		ReturnModel rm = new ReturnModel();
-		List<RecomUser> user = new ArrayList<RecomUser>();
-		user.add(new RecomUser("444"));
-		user.add(new RecomUser("555"));
-		rm.setData(user);
-		Aspect.afterReturning(rm);
-		return rm;
-	}
 	
-	@RequestMapping("/recom_link.do")
-	@ResponseBody
-	public Object getRecomLink(HttpServletRequest req) {
-		Aspect.before(req);
-		ReturnModel rm = new ReturnModel();
-		List<RecomLink> link = new ArrayList<RecomLink>();
-		link.add(new RecomLink("444"));
-		link.add(new RecomLink("555"));
-		rm.setData(link);
-		Aspect.afterReturning(rm);
-		return rm;
-	}
 	
 	@RequestMapping("/modifyPassword.do")
 	@ResponseBody

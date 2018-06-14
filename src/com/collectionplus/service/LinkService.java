@@ -235,4 +235,19 @@ public class LinkService {
 		ss.commit();
 		return rm;
 	}
+	public ReturnModel getLinks(HttpServletRequest req) {
+		String username = req.getParameter("username");
+		
+		List<Link> list = null;
+		//收藏夹名称等于all则会返回所有的所有的收藏
+		
+		list= dao.getAllLink(username);
+		ReturnModel rm = new ReturnModel();
+		rm.setData(list);
+		if(list==null) {
+			rm.setInfo("该用户暂时没有收藏哦~");
+		}
+		rm.setSuccess(true);
+		return rm;
+	}
 }

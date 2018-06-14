@@ -10,4 +10,6 @@ public interface ILink {
 	List<Link> selectAllLink(String username,int offset);
 	String findDirID(String dirname,String username);//根据用户名和收藏夹名称找到收藏夹ID；
 	void insertLink(Map<String,String> map);
+	List<Link> getAllLink(String username);
+	List<Link> getWholeLink();
 }

@@ -20,6 +20,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and `directory`.`username` =#{0}
 		limit #{1},6;
 	</select>
+	
+	<select id ="getAllLink" resultType="Link">
+		select `link`.`ID`,`directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
+		from `link` inner join `directory` on 
+		`link`.`dirID`=`directory`.`ID` 
+		and `directory`.`username` =#{0}
+	</select>
+	
+	<select id ="getWholeLink" resultType="Link">
+		select `link`.`ID`,`directory`.`dirname`,`link`.`picPath`,`link`.`value`,`link`.`read`,`link`.`title`,`link`.`source`,`link`.`time`,`link`.`type` 
+		from `link` inner join `directory` on 
+		`link`.`dirID`=`directory`.`ID` 
+	</select>
+	
+	
 	<!-- 根据用户名和收藏夹名称返回对应收藏夹的ID -->
 	<select  id="findDirID" resultType="String">
 		select `ID` from `directory` where `dirname`=#{0} and `username`=#{1};
