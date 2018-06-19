@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<update id="renameDir">
-		update `directory` set `username`=#{0}, `dirname`=#{2} where `dirname`=#{1};
+		update `directory` set `dirname`=#{2} where `dirname`=#{1} and `username`=#{0};
 	</update>
 	
 	<delete id="deleteDir">
