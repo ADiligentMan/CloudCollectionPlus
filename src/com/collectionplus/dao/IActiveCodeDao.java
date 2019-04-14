@@ -6,7 +6,7 @@ import com.collectionplus.bean.ActiveCode;
 * @ClassName: IActiveCode  
 * @Description: IActiveCode CRUD(create retrieve update delete)
 * @author acer  
-* @date 2018Äê4ÔÂ10ÈÕ    
+* @date 2018ï¿½ï¿½4ï¿½ï¿½10ï¿½ï¿½
 */
 public interface IActiveCodeDao {
 	public void insertActiveCode(ActiveCode ac);
